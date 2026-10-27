@@ -1,0 +1,503 @@
+\documentclass[12pt]{article}
+
+\usepackage[paper=letterpaper,margin=2.5cm]{geometry} % Set Margins
+
+%% Math and math fonts
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{bbold} % for \mathbbm{1}
+
+% date
+\usepackage[nodayofweek]{datetime}
+
+% Color
+\usepackage{color, xcolor}
+
+% Misc
+\usepackage{environ}  % \collect@body in asmmath
+\usepackage{graphicx} % \includegraphics options
+\usepackage{mdframed} % text boxes
+\usepackage{indentfirst} % Indent first paragraph after section header
+\usepackage[shortlabels]{enumitem} % Control enumerate items with [(a)]
+\usepackage{comment} % Comments
+\usepackage{fancyhdr} % Headers and footers
+
+% Tables
+\usepackage{array}
+
+% Sub-figures and figure placement
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float} 
+
+% Graphing
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tikz}
+
+% Title Placement
+\usepackage{titling}
+\setlength{\droptitle}{-6em}
+
+%set indent to 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+
+% Hyper refs
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor  = blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+% % Citation management
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authordate,open={(},close={)}}
+
+% ----------------------------------------
+% TITLE
+% ----------------------------------------
+
+\pagestyle{fancy}
+
+\lhead{Stone/Camacho}
+\chead{Class One}
+\rhead{FAME}
+
+\title{FAME Class 1 Notes -- Mathematics as Creative Symbolic Reasoning}
+\author{Eliana Stone and Mariana Camacho}
+
+\begin{document}
+\maketitle
+\section{What is the goal of this course?}
+This course aims to give you the tools to formalize problems and ``speak math'', so that you can understand and engage more fully with interdisciplinary problems elsewhere. 
+
+This class will help you choose which ``math'' approach should be applied to a given problem. We don't require you to memorize equations for regurgitation. Instead, you are familiarized with solution strategies and trained in how to apply them to environmental problems. This should also provide the math background to access a wider range of courses at Yale requiring some math familiarity. 
+
+\section{Canvas Overview and Course Objectives}
+
+See: \hyperlink{Canvas}{https://yale.instructure.com/courses/121587}
+
+\section{Introduction: Science vs Math}
+Science is evidence (data) base. Math is proof-based. In science, you observe things many times and can reject the hypothesis based on that evidence. However, in science, one cannot prove/conclude anything. In math, you do not need much evidence. Instead, you can do a proof and conclude something. 
+
+Math builds conclusions off of a few simple assumptions. Science rejects alternative explanations based on many observations.  
+
+\section{Sets}
+\textit{There is video material on sets, but below are some notes from the past.}
+
+Sets are collections of elements.  
+
+The \textbf{element} $x$ is in the \textbf{set} $X$:
+\begin{align*}
+    x \in X
+\end{align*}
+
+You may indicate different elements as $x_1, x_2, x_3...$ and all are in the set $X$:
+\begin{align*}
+    x_1, x_2, x_3... \in X
+\end{align*}
+
+Sets can be any collections of things 
+\begin{align*}
+    dogs \in Pets.
+\end{align*}
+You may hear the term \textbf{class} which is a set of sets. For instances, the "set" of pets is in the "class" of animals. 
+
+Let's say you have set $X$ and set $Y$. If every element of $X$ is contained in $Y$ then we $X$ a \textbf{subset} of $Y$, 
+\begin{align*}
+    X \subset Y.
+\end{align*}
+Your set $X$ may equal set $Y$ in certain cases, in which you can indicate a subset as 
+\begin{align*}
+    X \subseteq Y.
+\end{align*}
+
+You can have two different sets, $X$ and $Y$, and can talk about the \textbf{intersection} of the two sets which would be all the elements are in $X$ AND in $Y$ 
+\begin{align*}
+    X \cap Y
+\end{align*}
+
+You could also talk about the \textbf{union} of two sets, which would be all elements in $X$ OR in $Y$
+\begin{align*}
+    X \cup Y
+\end{align*}
+
+there is also the \textbf{complement} to set, which are all the elements in the \textit{space} you are working with but NOT in your set. 
+\begin{align*}
+    X^\complement
+\end{align*}
+
+\section{The Importance of Notation}
+Math is about relationships. But to relate numbers, or variables, or functions, we need notation. Math is also about communicating, so not only do you as an individual need mathematical notation that makes sense to you, but also to whomever you are communicating with. 
+
+There is a lot of math notation that everyone in this class is familiar with (\textit{e.g.,} $+, -, \div, \times, =$). A lot of this class is learning more notation so that you can quickly write down relationships between numbers, variables and functions, and people you're communicating can quickly understand it. 
+
+\section{Spaces of Numbers}
+Numbers can be thought of as adjectives. You can use them to describe the relationship of things. 
+
+Notational notes: 
+\begin{itemize}
+    \item The symbol $\simeq$ means that two sets are equal or the same.
+    \item We use set notation, $(), [], \{\}$
+    \begin{itemize}
+        \item $\{1,2,3,4\}$: This set only includes 4 numbers, the numbers 1, 2, 3, and 4. Nothing else, and nothing between! 
+        \item $[1,4]$: This set includes the number 1, all real numbers between 1 and 4, and the number 4. 
+        \item $(1,4)$ This set includes all the real numbers between 1 and 4, but not 1 and not 4. 
+         \item $(1,4]$ You can mix set notations, so this set does not include 1, is does include all real numbers between 1 and 4, and it does include 4. 
+    \end{itemize}
+\end{itemize}
+
+\textbf{Real numbers:} $\mathbb{R} \simeq [- \infty, \infty)$. This can be thought of as a line of numbers. You have your counting numbers $[1,2,3,...]$, but you also have all the numbers in between. The real numbers are a \textit{continuous} set of numbers, with no gaps in between. 
+
+Infinity is not considered a real number.
+
+\textbf{Positive real numbers:} $\mathbb{R}^+ \simeq [0, \infty)$. This set of positive real numbers includes 0. 
+
+You may also see a set of positive real numbers that leaves zero out denoted as $\mathbb{R}^++ \simeq (0, \infty)$, meaning it includes all the tiny numbers that are so small their almost equal to zero, but not zero itself. Remember, there are infinite real numbers between 0 and 1. 
+
+\textbf{Positive real numbers in $(x,y)$ space:} $\mathbb{R}^{++} \simeq  x \in [0, \infty]\ \text{and}\ y \in [0, \infty]$
+
+\textbf{Counting Numbers/Integers:} $[1,2,3,4,...) \in \mathbb{N}$, $\mathbb{N} \subset \mathbb{R}$. Counting numbers start with 1 (some people think they include 0, as well). Integers don't necessarily have to start with 1. 
+
+\textbf{Rational numbers:} can be written as a fraction. 
+
+\textbf{Irrational numbers:} cannot be written as a fraction. Examples are $\pi, e$.
+
+\section{Functions}
+
+\subsection{Functions map inputs to a single output}
+
+A function is something that returns a single element from its inputs. For example 
+\begin{align*}
+    f(x) = x+2 \\
+x \in \mathbb{R}^1  \text{ (domain)}
+\end{align*}
+is a function because we give it one element $x$, and it will return a single element. For example: 
+\begin{align*}
+    f(x) = x+2 \\
+    f(2) = 2+2 = 4 \\
+    f(3) = 3 + 2 = 5 \\
+    f(4) = 4 + 2 = 6
+\end{align*}
+In these examples, 4, 5, and 6 were our single outputs from the function $f(x)$.
+
+\textbf{Domain} is what $x$ is permissible to be. The \textbf{co-domain} is anything that $f(x)$ may be equivalent to. The \textbf{range} is what $f(x)$ can take the value of given the domain. Therefore, the range is a subset of the co-domain (and may be equal to the co-domain): 
+\begin{align*}
+    \text{range} \subseteq \text{co-domain}
+\end{align*}
+
+
+The domain of $f(x) = x+2$ was given as $x \in \mathbb{R}^1$. The co-domain will be $\mathbb{R}^1$ because $f(x)$ could be real number in 1-dimensional space. In this case, the range of $f(x)$ will also be the co-domain.
+
+Something that is NOT a function would be some bizarre thing where if you defined the function $g$ as 
+\begin{align*}
+    g(x) = x+2
+\end{align*}
+
+but $g(2) = 4 \And 5$. This operator $g$ is saying 2+2 = 4 and 2+2 = 5. This makes no sense, it's not a functions. 
+
+\subsection{Functions can map many inputs to one output}
+
+We've established that functions only have \textbf{one} output. However, they can have \textit{many} inputs, 
+
+\begin{align*}
+    f(x,y) = x + y\\
+    \mathbb{R}^2 \rightarrow \mathbb{R}^1
+\end{align*}
+the function above takes two inputs $(x,y) \in \mathbb{R}^2$ and maps those inputs into a single element (one dimensional real number, $\mathbb{R}^1$)
+
+\subsection{Explicit functions}
+\begin{align*}
+    y = a + b x\\
+    x = c + dy
+\end{align*}
+
+\subsection{Implicit function}
+\begin{align*}
+    G(x, y; a, b, c, d) = g
+\end{align*}
+
+where $G$ is a function that has \textbf{endogenous} variables $x$ and $y$ and \textbf{exogenous} variables $a, b, c, d$. 
+
+\textbf{Endogenous} variables ($x, y$) are determined \textit{within} the system---their values are solved for using the system of equations. \textbf{Exogenous} variables ($a, b, c, d$) are \textbf{parameters} determined \textit{outside} the system that we take as ``given'' when solving for the endogenous variables. 
+
+\begin{itemize}
+    \item Endogenous variables are often the outcomes your interested in of the variables you can manage to achieve your desired outcomes
+    \item Exogenous parameters are often policy, environmental conditions, or external shocks that influence your outcome, but cannot be changed. They can only be accepted and taken as given. 
+\end{itemize}
+
+\subsection{Equilibrium}
+An \textbf{equilibrium} is a state where all forces in a system are balanced---no variable has any tendency to change. Mathematically, we find equilibrium by setting our function equal to zero or by finding where supply equals demand, costs equal benefits, etc.
+
+For an implicit function like $G(x, y; a, b, c, d) = 0$, the equilibrium occurs when this equation is satisfied. The endogenous variables $(x, y)$ adjust until the system reaches this balanced state, given the fixed exogenous parameters $(a, b, c, d)$.
+
+\textbf{Examples of equilibrium:}
+\begin{itemize}
+    \item \textbf{Market equilibrium:} Supply = Demand
+    \item \textbf{Population equilibrium:} Birth rate = Death rate (zero population growth)
+    \item \textbf{Environmental equilibrium:} Pollution inflow = Natural cleanup rate
+    \item \textbf{Budget equilibrium:} Income = Expenditures
+\end{itemize}
+
+\textbf{Key insight:} At equilibrium, the endogenous variables have ``settled'' into values that satisfy all the relationships in your system simultaneously. If you perturb the system slightly, it will tend to return to this equilibrium (if it's a stable, which we will talk about more later). 
+
+\section{Units}
+
+PAY ATTENTION TO UNITS! You will be working with many people in many spaces. Make sure you're all working with the same units. The reason you may be taking past one another may be as simple as you and the other person are using different units, and you don't even know that yet. 
+
+If you have the equation: 
+\begin{align*}
+    y = a + bx
+\end{align*}
+then $y$, $a$ and $bx$ need to all be in the same unit. $b$ is in the unit of $\frac{a}{x}$.
+
+In the climate conversation we know our units (tons of green house gas equivalent emissions). However, in biodiversity we don't know the units yet. In environmental justice conversations, we don't always know the unit. And so when we're trying to maximize benefit or minimize harm, we don't totally know how if we don't know the unit. 
+
+If you only get one thing out of this class, \textbf{pay attention to units}. 
+
+\section{Trig}
+
+Trig functions don't work in an $(x,y)$ space. They work in a \textit{polar} space $(r, \theta)$, where $r$ is a radial distance for the origin and $\theta$ is the angle for the x axis.  They do get used a lot in applied settings, but don't let them scare you. 
+
+\textbf{Key point:} If you see these, you should think about circles. 
+
+\begin{figure}[htp]
+    \centering
+        \includegraphics[width=0.5\textwidth]{Screen Shot 2023-09-06 at 11.29.46 AM.png}
+    \caption{Trig}
+\end{figure}
+
+\begin{align*}
+    \sin(\theta) = \frac{o}{h}\\
+    \cos(\theta) = \frac{a}{h} \\
+    \tan(\theta) = \frac{o}{a}
+\end{align*}
+
+
+\section{Properties}
+\textbf{Communicative}:
+\begin{align*}
+    a+b = b+ a
+\end{align*}
+
+\textbf{Associative}: 
+\begin{align*}
+    a+ (b+c) = (a+b) +c
+\end{align*}
+
+\textbf{Distributive}:
+\begin{align*}
+    a(b+c) = ac+ bc
+\end{align*}
+An application of the distributive property is 
+\begin{align*}
+    (a +b) (c+d) = ac + ad + bc + bd.
+\end{align*}
+When we learned this, we all shrugged and said ``sure''.  But if we return to how we were originally taught multiplication. Look below at how you likely learned multiplication, and you can see it follows the distributive pattern.  
+\begin{align*}
+    15 \\
+    \underline{\times 12} \\
+    10\\
+    20 \\
+    50\\
+   \underline{+ 100}\\
+   180
+\end{align*}
+this is actually an application of the distributive property, 
+\begin{align*}
+    (2+10)(5+10) = 10 + 20 +50 + 100 = 180.
+\end{align*}
+
+
+
+\textbf{Rules with zero}:
+\begin{align*}
+    a+ 0 = a \\
+    0a = 0
+\end{align*}
+
+\textbf{Rules with one}:
+\begin{align*}
+    1*a = a
+\end{align*}
+
+\textbf{Inverse property}:
+\begin{align*}
+    a* \frac{1}{a} = 1
+\end{align*}
+
+\textbf{A note on equal signs}: The equal sign means that the two things on either side of the equal sign will evaluate to the same thing. It is not like a function where you put elements in and get something out. It is an identity, the two items on each side of the "=" literally are the same thing.
+
+\section{Convex \textit{Sets}}
+A set is \textbf{convex} if you are able to draw a line between \textit{any two} elements in the set and all elements intersected by the line are elements in the set. A circle is a convex set. A cresent is not a convex set. 
+
+Convex sets are important if you're operating with a \textbf{non-convex} set, you can fall into tipping points where you arrive at states of the world that are completely unfamiliar. The new state of the world was not in your original set of possible states of the world. In climate change, we don't want to go into unknown states of the world. We'd like to stay in our current states of the world and move smoothly from state to state. 
+
+However, there are some issues where you may want to cross a tipping point. For instance, when addressing environmental justice or systemic discrimination issues, you may want to tip into a state of the world (where there are no inequities) and have it be difficult to return to your original state of the world. 
+
+\section{Concave and Convex \textit{Functions}}
+
+Concavity and convexity mean something different for \textit{functions} than it does for \textit{sets.}
+
+\begin{figure}[htp]
+    \centering
+        \includegraphics[width=0.5\textwidth]{Screen Shot 2024-09-09 at 10.45.31 AM.png}
+    \caption{Convex and concave functions}
+    \label{fig:sample}
+\end{figure}
+
+\textbf{Quasi-concave:} Describes a 3+ dimensional function where the level sets (what the function looks like in 2 dimension) is convex. This is important in welfare economics and utility maximization problems. If a function is quasi-concave, it has useful properties for utility maximization. 
+
+\section{Solving a system of equations}
+
+Solution to many problems is to find where two lines meet. 
+
+\begin{align}
+    P = a-bQ \\
+    P = w +yQ\\
+    S = D = Q
+\end{align}
+
+set two equations equal to one another because $P = P$ and solve for Q
+\begin{align}
+    a - bQ = w + yQ \\
+    a - w = yQ + bQ \\
+    a - w = (y+b) Q\\
+    Q = \frac{a - w}{y + b}
+\end{align}
+
+\subsection{Problem set example}
+
+In the problem set, you'll see:
+
+\begin{align}
+    \frac{\partial a}{\partial t} = ar_a (1 - \frac{a + \alpha b}{K_a}) = 0\\
+    \frac{\partial b}{\partial t} = br_b (1 - \frac{\beta a + b }{K_b}) = 0
+\end{align}
+
+We know that we're looking for an \textbf{equilibrium} (\textit{i.e., } where the system isn't changing) and so the \textit{derivatives  equal to zero}. 
+
+In the above example, what are we solving for? The values of $a$ and $b$ (those are what change through time $t$, they are our variables). 
+
+How many solutions do we expect to have for $a$ and $b$? 2 for each, because equation 8 and equation 9 are both quadratic equations with respect to $a$ and $b$, respectively. Therefore, we would expect to have two "roots" for each. Recall that a root is the value of your variable that would cause your equation to evaluate to zero. 
+
+Because there is two solutions for $a$ where eqn 8 = 0, and two solutions for $b$ where eqn 9 = 0 then there are four potential solutions as sets of $(a,b)$. Immediately we can tell that $a= 0$ and $b = 0$ will be a solution to eqn 8 and 9, because of the zero multiplicative rule and a and b being in the first multiplicative term. 
+
+Own solutions are going to take the form of $(a, b)$. 
+\begin{align}
+    (0, 0) \\
+    (?, 0) \\
+    (0, ?) \\
+    (?, ?)
+\end{align}
+
+If we want to fill in the question mark of 11, we can take eqn 8 
+\begin{align*}
+    \frac{\partial a}{\partial t} = ar_a (1 - \frac{a + \alpha b}{K_a}) = 0 \\
+    1 - \frac{a + \alpha b}{K_a} = 0 \\ 
+    1 - \frac{a}{K_\alpha} = 0\\
+    a = K_a
+\end{align*}
+Because of the zero multiplicative rule, then that we know b = 0,  then some simple algebra. 
+
+
+We can do the exact same thing for eqn 12 and get the following solutions: 
+\begin{align}
+    (0, 0) \\
+    (K_a, 0) \\
+    (0, K_b) \\
+    (?, ?)
+\end{align}
+
+For the final solution we have two equations and two unknowns (these come from our original eqns 8 and 9 after using the 0 multiplicative rule and then moving the 1 to the other side): 
+
+\begin{align}
+    1 = \frac{a + \alpha b}{K_a} \\
+    1 = \frac{\beta a + b }{K_b}
+\end{align}
+
+We can now solve for a in eqn 18, plug that solution into 19 and solve for b. We can the solution for b into 18 to get our solution for a. This will give us our final solution.  
+
+\textit{An algebra tip:} We are solving for $a$ and $b$. If we find messy terms that \textbf{don't} have an $a$ or $b$, we can relabel those terms because those terms are just a constant that we can name. This really helps simplify the algebra. 
+
+\section{Quadratic Formula and relabeling}
+
+Let's say you have a quadratic equation 
+\begin{align*}
+    y = a x^2 + bx + d
+\end{align*}
+
+Recall, you can only use the quadratic formula if the equation is equal to zero!! 
+
+\begin{align*}
+    0 = a x^2 + bx + d - y
+\end{align*}
+
+But now this is not in the familiar form we know for the quadratic formula. Let $c = d-y$. \textit{This means that we're holding $y$ fixed. We chose to do this as the modeler. We have chosen to hold $y$ constant, implicitly.} 
+
+We can rewrite our equation: 
+\begin{align*}
+    0 = a x^2 + bx + c
+\end{align*}
+
+and so we can now solve for the roots of $x$ using the quadratic formal  
+\[x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\]
+
+\section{Jensen's Inequality}
+
+Let $F(x)$ and $G(x)$ both be \textbf{non-linear} equations. Most environmental models involve \textit{lots} of non-linear equations. Then Jensen's inequality tells us that 
+\begin{align*}
+    F(G(X)) \neq G(F(X)).
+\end{align*}
+
+The Jensen's inequality applies to the expectation operator 
+\begin{align*}
+    E(F(X)) \neq F(E(X))
+\end{align*}
+
+\subsection{Showing this is true}
+
+Let our set of $X$ be:
+\begin{align*}
+    X = \{1, 2, 3, 4, 5\}
+\end{align*}
+
+And 
+\begin{align*}
+    F(x) = x^2
+\end{align*}
+
+And the function $E(X)$ is the expectation operator (aka the average).
+\begin{align*}
+    E(X) = \frac{1}{N} \sum_{x_n \in X} x_n
+\end{align*}
+
+The right hand side of this special case of Jensen inequality:
+\begin{align*}
+    F(E(X)) = F(E(\{1, 2, 3, 4, 5\}))\\
+    = F(3) \\
+    = 3^2 \\
+    = 9
+\end{align*}
+
+The left hand side of this special case of Jensen is 
+\begin{align*}
+    E(F(X)) = E(X^2) \\
+    = E(\{1, 4, 9, 16, 25\}) \\
+    = 11
+\end{align*}
+
+and so 
+\begin{align*}
+    E(F(X)) \neq F(E(X))\\
+    11 \neq 9
+\end{align*}
+
+
+\end{document}
