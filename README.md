@@ -7,7 +7,9 @@ Note: You can ignore the .tex files. The PDFs are what are viewable and what you
 
 
 ### Office hours
-Mariana's office hours are Tuesdays 4:00 - 5:00 p.m. in Kroon G01. Eliana's office hours are Mondays 2:00 - 3:00 p.m. in Kroon G17.
+Mariana's office hours are Tuesdays 4:00 - 5:00 p.m. in Kroon G01. 
+
+Eliana's office hours are Mondays 2:00 - 3:00 p.m. in Kroon G17.
 
 Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu 
 
