@@ -18,5 +18,9 @@ Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu
 
 ### Class One (Oct 27) -- Mathematics as Creative Symbolic Reasoning
 
--  [class notes](class_notes/class_1/1_class.pdf): Course goals, science vs. math,  number spaces (real, rational, natural), functions, sets, linearity, independent vs. dependent variables
+-  [class notes](class_notes/class_1/class_1.pdf): Course goals, science vs. math,  number spaces (real, rational, natural), functions, sets, linearity, independent vs. dependent variables
+
+### Class Two (Oct 29) -- Mathematics as Creative Symbolic Reasoning cont.
+
+-   [class notes](class_notes/class_2/class_2.pdf): Logs, exponents, Jensen's inequality, systems thinking, matrix notation and operations
 
