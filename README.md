@@ -1,5 +1,5 @@
 # FAME
-This repository contains the notes prepared by teaching fellows for Eli Fenichel's Fundamentals of Applied Math for Environmental Scientists Course at the Yale School of the Environment in the Fall of 2026 adapted from original materials created by Andie Creel in Fall 2025 (See: https://github.com/a5creel/FAME). 
+This repository contains the notes prepared by teaching fellows for Eli Fenichel's Fundamentals of Applied Math for Environmental Scientists Course at the Yale School of the Environment in the Fall of 2026 adapted from materials created by Andie Creel in Fall 2025 (See: https://github.com/a5creel/FAME). 
 
 The repository has two primary folders, `class notes` and `archive`. The class notes are taken during Eli's in-class lectures. Note: You can ignore the .tex files. The PDFs are what are viewable and what you want! The .tex files are just how we make the pdfs. 
 
@@ -14,7 +14,7 @@ Eliana's office hours are Mondays 2:00 - 3:00 p.m. in Kroon G17.
 Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu 
 
 
-# Preliminaries 
+# Module 1 
 
 ### Class One (Oct 27) -- Mathematics as Creative Symbolic Reasoning
 
