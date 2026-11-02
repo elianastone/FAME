@@ -9,7 +9,7 @@ The `archive` folder contains class notes and supplemental `section notes` writt
 ### Office hours
 Mariana's office hours are Tuesdays 4:00 - 5:00 p.m. in Kroon G01. 
 
-Eliana's office hours are Mondays 2:00 - 3:00 p.m. in Kroon G17.
+Eliana's office hours are Mondays 3:00 - 4:00 p.m. in Kroon 319.
 
 Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu 
 
