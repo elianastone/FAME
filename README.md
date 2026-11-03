@@ -1,5 +1,5 @@
 # FAME
-This repository contains the notes prepared by teaching fellows for Eli Fenichel's Fundamentals of Applied Math for Environmental Scientists Course at the Yale School of the Environment in the Fall of 2026 adapted from materials created by Andie Creel in Fall 2025 (See: https://github.com/a5creel/FAME). 
+This repository contains the notes prepared by teaching fellows for Eli Fenichel's Fundamentals of Applied Math for Environmental Scientists Course at the Yale School of the Environment in the Fall of 2026 adapted from materials created by previous teaching fellows. 
 
 The repository has two primary folders, `class notes` and `archive`. The class notes are taken during Eli's in-class lectures. Note: You can ignore the .tex files. The PDFs are what are viewable and what you want! The .tex files are just how we make the pdfs. 
 
