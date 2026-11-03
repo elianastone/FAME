@@ -20,6 +20,8 @@ Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu
 
 -  [class notes](class_notes/class_1/class_1.pdf): Course goals, science vs. math,  number spaces (real, rational, natural), functions, sets, linearity, independent vs. dependent variables
 
+# Module 2
+
 ### Class Two (Oct 29) -- Mathematics as Creative Symbolic Reasoning (cont.) & Math for Environmental Relationships and Systems
 -   [class notes](class_notes/class_2/class_2.pdf): Logs, exponents, Jensen's inequality, systems thinking, matrix notation and operations
 
