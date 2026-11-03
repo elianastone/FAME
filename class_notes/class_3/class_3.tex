@@ -1,0 +1,592 @@
+\documentclass[12pt]{article}
+
+\usepackage[paper=letterpaper,margin=2.5cm]{geometry} % Set Margins
+
+%% Math and math fonts
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{bbold} % for \mathbbm{1}
+
+% date
+\usepackage[nodayofweek]{datetime}
+
+% Color
+\usepackage{color, xcolor}
+
+% Misc
+\usepackage{environ}  % \collect@body in asmmath
+\usepackage{graphicx} % \includegraphics options
+\usepackage{mdframed} % text boxes
+\usepackage{indentfirst} % Indent first paragraph after section header
+\usepackage[shortlabels]{enumitem} % Control enumerate items with [(a)]
+\usepackage{comment} % Comments
+\usepackage{fancyhdr} % Headers and footers
+
+% Tables
+\usepackage{array}
+
+% Sub-figures and figure placement
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float} 
+
+% Graphing
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tikz}
+
+% Title Placement
+\usepackage{titling}
+\setlength{\droptitle}{-6em}
+
+%set indent to 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+
+% Hyper refs
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor  = blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+% % Citation management
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authordate,open={(},close={)}}
+
+% % Move the header up
+\usepackage{titling}
+\posttitle{\par\centering}
+\preauthor{\centering\normalsize}
+\postauthor{\par\centering\vspace{-1em}}
+\predate{\centering\normalsize}
+\postdate{\par\centering\vspace{-1em}}
+
+% ----------------------------------------
+% TITLE
+% ----------------------------------------
+
+\pagestyle{fancy}
+
+\lhead{Stone}
+\chead{Class One}
+\rhead{FAME}
+
+\title{FAME Class 3 Notes -- Math for Environmental Relationships and Systems}
+\author{Eliana Stone}
+\date{November 3, 2026}
+
+\begin{document}
+\maketitle
+\section{Review from last class}
+Consider the matrix: 
+\begin{align}
+    A = \begin{bmatrix}
+        a_{11} & a_{12} & a_{13} & ... & a_{1j}\\
+        a_{21} & a_{22} & a_{23} & ... & a_{2j}\\
+        ... & ... & ... & ... & ... \\
+        a_{i1} & a_{i2} & a_{i3} & ... & a_{ij}\\
+    \end{bmatrix}
+\end{align}
+
+The first subscript $i$ is the row and the second subscript $j$ is the column, so this is an $(i \times j)$ matrix. 
+
+\section{Scalar Multiplication}
+You could "scale" a whole matrix with a scalar. Consider the $2 \times 2$ matrix, A. 
+
+\begin{align}
+    A = \begin{bmatrix}
+            a_{11} & a_{12} \\
+            a_{21} & a_{22}
+        \end{bmatrix}
+\end{align}
+
+You could scale the matrix A by 7, 
+\begin{align}
+    7 \times A = \begin{bmatrix}
+            7 a_{11} & 7 a_{12} \\
+            7 a_{21} & 7 a_{22}
+        \end{bmatrix}
+\end{align}
+
+
+\section{Matrix Multiplication}
+If we have a matrix $A$ that is $(m \times n)$ and a matrix $B$ that is $(n \times p)$, then the product $AB$ will be an $(m \times p)$ matrix. For matrix multiplication to be possible, the number of columns in the first matrix must equal the number of rows in the second matrix. We call these the \textbf{inner dimensions}, and they must match. The \textbf{outer dimensions} determine the dimensions of the resulting matrix.
+
+\[
+\underbrace{A}_{m \times n} \times
+\underbrace{B}_{n \times p}
+=
+\underbrace{AB}_{m \times p}
+\]
+
+This requirement comes from how matrix multiplication works by multiplying rows by columns. 
+
+\textbf{Order matters when multiplying matrices!} Unlike multiplication of real numbers, matrix multiplication is not generally commutative, meaning $AB \neq BA$. In fact, reversing the order might make multiplication impossible. For example, if the inner dimensions of $M \times B$ do not match, the matrices are \textbf{not conformable}, and we cannot compute their product.
+
+You can think of matrix dimensions like units. Just as we need to keep track of units when performing calculations, we need to keep track of matrix dimensions to make sure our operations are mathematically valid.
+
+Consider the matrices $A (2 \times 2)$  and $B (2 \times 2)$:
+\begin{align}
+    A = \begin{bmatrix}
+            a_{11} & a_{12} \\
+            a_{21} & a_{22}
+        \end{bmatrix}, 
+    B = \begin{bmatrix}
+            b_{11} & b_{12} \\
+            b_{21} & b_{22}
+        \end{bmatrix}
+\end{align}
+
+Now,  $A \times B$. Matrix multiplication requires row multiplied by columns.
+\begin{align}
+    A \times B = \begin{bmatrix}
+        a_{11} b_{11} + a_{12} b_{21}  & a_{11} b_{12} + a_{12} b_{22} \\
+        a_{21} b_{11} + a_{22} b_{21}  & a_{21} b_{12} + a_{22} b_{22} 
+    \end{bmatrix}
+\end{align}
+
+Now, consider matrix multiplication with a vector.
+\begin{align}
+    x = \begin{bmatrix}
+            M \\
+            N
+        \end{bmatrix}
+\end{align}
+
+To \textbf{pre-multiply} $x$ by $A$ means multiplying $x$ from the left, giving $Ax$. 
+\begin{align}
+    \underset{(2 \times 2)}{A} \underset{(2 \times 1)}{x} &= \begin{bmatrix}
+            M \\
+            N
+        \end{bmatrix} 
+        \begin{bmatrix}
+            a_{11} & a_{12} \\
+            a_{21} & a_{22}
+        \end{bmatrix} \\
+       &= \begin{bmatrix}
+           a_{11} M + a_{12}N \\
+           a_{21}M + a_{22}N
+       \end{bmatrix} 
+\end{align}
+
+
+\section{Transpose}
+When you transpose a matrix, the first row becomes the first column. 
+\begin{align}
+    A = \begin{bmatrix}
+        2 & 7 \\
+        1 & 3
+    \end{bmatrix}\\
+    A^{T} = \begin{bmatrix}
+        2 & 1 \\
+        7 & 3
+    \end{bmatrix}
+\end{align}
+
+Transpose is important if you're interested in a matrix multiplied by itself! 
+\begin{align}
+    A^2 = A^{T}A 
+\end{align}
+To square, you always pre-multiply the original by the transpose. This keeps the matrices conformable. 
+
+\textbf{Transpose is not the inverse!!! } Which is a common mistake. 
+
+
+\section{Names of elements of a matrix}
+\begin{itemize}
+    \item Diagonal: the elements all the diagonal (top left corner to the lower right)
+    \item Lower Triangular matrix: elements under the diagonal 
+    \item Upper triangular matrix: elements above the diagonal
+\end{itemize}
+
+
+\section{Identity Matrix}
+
+The identity matrix have similar properties to 1. 
+\begin{align}
+    I = \begin{bmatrix}
+        1 & 0 &  ... \\
+        0 & 1 & ... \\
+        ... & \\
+        0 & 0 & ... & 1
+    \end{bmatrix}
+\end{align}
+There are 1s along the diagonal. An important characteristic of the identity matrix is that for any A
+\begin{align}
+    \underset{(2 \times 2)} A^{-1}  \underset{(2 \times 2)} A = \begin{bmatrix}
+                    1 & 0 \\
+                    0 & 1
+                \end{bmatrix}
+\end{align}
+
+Any matrix pre-multiplied by it's inverse will be an identity matrix. 
+
+\section{Rank}
+Rank is the largest unique square matrix you can have inside a matrix.
+
+The key here is knowing if a row is unique.  For instance,
+\begin{align}
+    \begin{bmatrix}
+        2 & 4 \\
+        1 & 2
+    \end{bmatrix}
+\end{align}
+Only has 1 unique row because the first row is the second row multiplied by 2. 
+
+\section{Trace of a Matrix}
+
+The trace of a matrix is the sum of the elements along its \textit{main diagonal} (the diagonal that runs from the top left to the bottom right of the matrix).
+
+\subsection*{Definition}
+
+For a square matrix \( A \) of size \( n \times n \),
+\[
+A = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{n1} & a_{n2} & \cdots & a_{nn} \end{bmatrix},
+\]
+the trace of \( A \), denoted as \( \text{tr}(A) \), is given by
+\[
+\text{tr}(A) = a_{11} + a_{22} + \cdots + a_{nn} = \sum_{i=1}^n a_{ii}.
+\]
+
+\section{Tensor}
+In the context of linear algebra, we can think of tensors as multidimensional arrays of numbers. A scalar is a rank-0 tensor (a single number), a vector is a rank-1 tensor (a one-dimensional array), and a matrix is a rank-2 tensor (a two-dimensional array). A rank-3 tensor extends this idea to three dimensions and can be thought of as a collection of matrices stacked together.
+
+For example, a matrix $A$ has two indices, $a_{ij}$, where $i$ identifies the row and $j$ identifies the column. A rank-3 tensor $T$ has three indices, $t_{ijk}$, and might have dimensions $(m \times n \times p)$.
+
+\section{Systems Thinking and Matrices for LCA}
+
+Consider a production system represented by an input-output matrix $A$, where $x$ is the vector of total production and $d$ is the vector of final demand.
+
+\[
+x = Ax + d
+\]
+
+\textbf{Step 1: Write the dimensions!}
+
+\[
+\underbrace{x}_{N \times 1}
+=
+\underbrace{A}_{N \times N}
+\underbrace{x}_{N \times 1}
++
+\underbrace{d}_{N \times 1}
+\]
+
+Here, $A$ is an $(N \times N)$ matrix, while $x$ and $d$ are $(N \times 1)$ column vectors.
+
+\textbf{Step 2: Get all the $x$ terms on one side.}
+
+Can we subtract an $(N \times 1)$ matrix from another $(N \times 1)$ matrix? Yes! Matrix subtraction needs both matrices have the same dimensions in order for the operation to be conformable.
+
+Subtract $Ax$ from both sides,
+
+\[
+x - Ax = d
+\]
+
+\textbf{Step 3: Introduce the identity matrix.}
+
+We want to factor out $x$, but we cannot simply write $(1-A)x$, because $A$ is a matrix, not a scalar.
+
+Instead, we introduce the identity matrix $I$, which satisfies
+
+\[
+Ix = x
+\]
+
+Since $A$ is an $(N \times N)$ matrix, the identity matrix must also be $(N \times N)$. An identity matrix is always square.
+
+We can therefore rewrite
+
+\[
+Ix - Ax = d
+\]
+
+Now factor out $x$,
+
+\[
+(I-A)x = d
+\]
+
+Note: $A$ has to remain to the left of $x$ for multiplication to remain conformable.
+
+\textbf{Step 4: Solve for $x$.}
+
+To isolate $x$, we pre-multiply both sides by the inverse of $(I-A)$, assuming this inverse exists
+
+\[
+(I-A)^{-1}(I-A)x = (I-A)^{-1}d
+\]
+
+Since $(I-A)^{-1}(I-A) = I$, we get
+
+\[
+Ix = (I-A)^{-1}d
+\]
+
+Therefore,
+
+\[
+\boxed{x = (I-A)^{-1}d}
+\]
+
+\subsection{Example in Excel}
+
+See LCA Excel example in Canvas: \href{https://yale.instructure.com/courses/121587/files/12937814?module_item_id=1152749}{Link!}\\
+
+
+\section{Inverting a matrix}
+The reason we need to be able to invert matrix is because we cannot divide by a matrix. So this is an important operation we need for solving systems of linear equations. 
+
+
+\subsection{Inverting a $2 \times 2$ matrix}
+
+Remember the rules for multiplying by 1. The identity matrix plays the same role in matrix multiplication as the number 1 does in ordinary multiplication.
+\begin{align}
+    \frac{1}{a} a = 1\\
+    a^{-1}a = 1 \\
+    \underset{1 \times 1}a^{-1} \underset{1 \times 1}a = \underset{1 \times 1}I = 1\\
+    \underset{n \times n}A^{-1} \underset{n \times n}A = \underset{n \times n}I
+\end{align}
+
+Consider the matrix $A$ and a matrix $B$, which is the inverse of $A$:
+\begin{align}
+    A = \begin{bmatrix}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{bmatrix}\\
+    A^{-1} = B = \begin{bmatrix}
+        b_{11} & b_{12} \\
+        b_{21} & b_{22}
+    \end{bmatrix}
+\end{align}
+
+What is $BA = A^{-1}A = I$?
+
+\begin{align}
+    \begin{bmatrix}
+        b_{11} & b_{12} \\
+        b_{21} & b_{22}
+    \end{bmatrix}
+    \begin{bmatrix}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{bmatrix}
+    =     \begin{bmatrix}
+        b_{11}a_{11} + b_{12}a_{21} & b_{11}a_{12} + b_{12}a_{22} \\
+        ... & ...
+    \end{bmatrix} = 
+    \begin{bmatrix}
+        1 & 0 \\
+        0 & 1
+    \end{bmatrix}
+\end{align}
+
+The first element in the first row (position $[1,1]$) of the matrix $AB$ must equal the element in position $[1,1]$ of the identity matrix, since a matrix times its inverse is the identity matrix ($AB=I$). We can use this equality to write an equation and then we're just doing some algebra to solve for $b_{11}$,
+\begin{align}
+    b_{11}a_{11} + b_{12}a_{21} = 1\\
+    \implies b_{11} = \frac{1 - b_{12} a_{21}}{a_{11}} \label{b_11}
+\end{align}
+
+We can do this for the other elements of $AB$. The second element in the first row (position $[1, 2]$) of $AB$ implies 
+\begin{align}
+    b_{11}a_{12} + b_{12}a_{22} = 0 
+\end{align}
+
+Plugging in what we got for $b_{11}$ earlier in equation \ref{b_11} gives us
+\begin{align}
+     \frac{1 - b_{12} a_{21}}{a_{11}} a_{12} + b_{12}a_{22} = 0
+\end{align}
+\begin{align}
+     \implies b_{12} = \frac{a_{22}}{a_{11} a_{22} - a_{12} a_{21}}
+     \label{b_12}
+\end{align}
+
+Since we want a solution for $b_{11}$ that's only a function of elements from the A matrix, we can plug eqn \ref{b_12} into eqn \ref{b_11} to get rid of the $b_{12}$.
+
+\begin{align}
+    b_{11} = \frac{1 - \frac{a_{22}}{a_{11} a_{22} - a_{12} a_{21}} a_{21}}{a_{11}} 
+\end{align}
+\begin{align}
+   \implies b_{11} = \frac{a_{22}}{a_{11} a_{22} - a_{12} a_{21}}. 
+\end{align}
+
+The solutions to the other elements are (just giving them so we don't have to solve for them algebraically over and over again): 
+\begin{align}
+    b_{12} = \frac{-a_{12}}{a_{11} a_{22} - a_{12} a_{21}}\\
+    b_{21} = \frac{-a_{21}}{a_{11} a_{22} - a_{12} a_{21}} \\
+    b_{22} = \frac{a_{11}}{a_{11} a_{22} - a_{12} a_{21}} 
+\end{align}
+
+Remember that we're trying to solve for matrix $B$ right now, which is the inverse of $A$. Notice that there is a pattern here where each element of the inverse matrix is multiplied by the fraction $\frac{1}{a_{11} a_{22} - a_{12} a_{21}}$. So we can write the solution to our inverse matrix as 
+
+\begin{align}
+    B = A^{-1} = \frac{1}{a_{11} a_{22} - a_{12} a_{21}} \begin{bmatrix}
+        a_{22} & -a_{12}\\
+        -a_{21} & a_{11}
+    \end{bmatrix} \label{2_sol}
+\end{align}
+
+The first term is the inverse of the \textbf{determinant}, where the determinant is \[det(A) = a_{11} a_{22} - a_{12} a_{21}\] and the second term is the \textbf{adjoint matrix}. 
+\[adj(A) = \begin{bmatrix}
+        a_{22} & -a_{12}\\
+        -a_{21} & a_{11}
+    \end{bmatrix}\]
+
+So our solution in equation \ref{2_sol} is in the form: \\
+\begin{align}
+    A^{-1} = \frac{1}{det(A)} adj(A) \label{og_def}
+\end{align}
+
+
+Notice that if the determinant is 0, which will happen if your matrix is not \textbf{full rank}, then your inverse matrix will not be defined because you'll have $\frac{1}{0}.$ If this is the case, the inverse of the matrix does not exist.\\
+
+\subsection{Full Rank Square Matrix}
+
+A full rank square matrix is an $(N \times N)$ matrix whose rank is equal to $N$. This means that all $N$ rows (and columns) are \textbf{linearly independent}, so no row or column can be written as a linear combination of the others.
+
+For an $(N \times N)$ matrix $A$,
+
+\[
+{\operatorname{rank}(A) = N}
+\]
+
+Since $A$ is a full rank square matrix, it is also \textbf{invertible}, meaning there exists an inverse $A^{-1}$ such that
+
+\[
+A^{-1}A = AA^{-1} = I
+\]
+
+Equivalently, a square matrix is full rank if and only if its determinant is nonzero,
+
+\[
+\det(A) \neq 0
+\]
+
+If a square matrix is not full rank, it is called \textbf{rank-deficient}, meaning its inverse does not exist.
+
+\subsection{Examples of Square Matrices That Are Not Full Rank}
+
+A square matrix might appear to be full rank because its rows and columns contain different numbers. However, to be full rank, no row can be expressed as a linear combination of the other rows.
+
+\textbf{Example 1: One row is a multiple of another}
+
+Consider the matrix:
+
+\[
+A =
+\begin{bmatrix}
+2 & 5 \\
+6 & 15
+\end{bmatrix}
+\]
+
+At first glance, all four elements are different. However, the second row is simply the first row multiplied by 3.
+
+\[
+R_2 = 3R_1
+\]
+
+Therefore, the two rows are linearly dependent and there is only one linearly independent row, so
+
+\[
+\operatorname{rank}(A) = 1 < 2
+\]
+
+We can also verify this using the determinant.
+
+\[
+\det(A) = (2)(15) - (5)(6) = 30 - 30 = 0
+\]
+
+Since $\det(A) = 0$, the matrix is rank-deficient and does not have an inverse.\\
+
+\textbf{Example 2: One row is a linear combination of other rows}
+
+Consider a larger matrix:
+
+\[
+B =
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 1 & 5 \\
+5 & 3 & 8
+\end{bmatrix}
+\]
+
+This matrix is less obviously dependent because no row is simply a scalar multiple of another row. However, notice that the third row is the sum of the first two rows.
+
+\[
+R_3 = R_1 + R_2
+\]
+
+To see this,
+
+\[
+\begin{bmatrix}
+5 & 3 & 8
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 2 & 3
+\end{bmatrix}
++
+\begin{bmatrix}
+4 & 1 & 5
+\end{bmatrix}
+\]
+
+Therefore, the third row does not provide any new linearly independent information. Only two rows are linearly independent, so
+
+\[
+\operatorname{rank}(B) = 2 < 3
+\]
+
+As a result, $B$ is also rank-deficient and does not have an inverse.\\
+
+\textbf{Example 3: A row containing only zeros}
+
+Consider the matrix:
+
+\[
+C =
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+0 & 0 & 0
+\end{bmatrix}
+\]
+
+The third row contains only zeros, meaning it does not provide any additional linearly independent information. A row of zeros is always linearly dependent because it can be expressed as a linear combination of the other rows (by multiplying them by zero).
+
+Since only two rows are linearly independent,
+
+\[
+\operatorname{rank}(C) = 2 < 3
+\]
+
+Therefore, $C$ is also rank-deficient and does not have an inverse.
+
+\subsection{Determinants}
+
+The determinant will \textit{determine} if you can invert a matrix.
+
+You might see two different notations, which are equivalent. 
+
+\[det(A) \quad \text{and} \quad |A|\]
+
+Note: $|A|$ does not denote absolute value.
+
+In school, we would solve a system of equations for where two lines crossed. If the lines were different (and not parallel), then they would cross somewhere and we could find a point where the two lines are equal at that point. However, if you had two lines that were equal, aka they are the same line, then there is no single point where the two are equal. A \textbf{determinant} will let you know if your system of equations has a solution. If the determinant is 0, then two lines are the same or they are parallel (not unique). The reason we're talking about rows and columns of matrices as if they are lines is because the rows and columns of a system of matrices gives us a system of equations.
+
+This issue shows up if some of your variables are perfectly co-linear aka parallel. If you have variables that are co-linear, you won't be able to do a multi-variate regression and the determinant will be zero (unless you have tons and tons of data). 
+
+
+
+\end{document}

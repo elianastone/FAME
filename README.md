@@ -20,7 +20,9 @@ Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu
 
 -  [class notes](class_notes/class_1/class_1.pdf): Course goals, science vs. math,  number spaces (real, rational, natural), functions, sets, linearity, independent vs. dependent variables
 
-### Class Two (Oct 29) -- Mathematics as Creative Symbolic Reasoning cont.
-
+### Class Two (Oct 29) -- Mathematics as Creative Symbolic Reasoning (cont.) & Math for Environmental Relationships and Systems
 -   [class notes](class_notes/class_2/class_2.pdf): Logs, exponents, Jensen's inequality, systems thinking, matrix notation and operations
+
+### Class Three (Nov 3) -- Math for Environmental Relationships and Systems
+-   [class notes](class_notes/class_3/class_3.pdf): Scalar multiplication, matrix multiplication, transpose of a matrix, identity matrix, rank, LCA, inverse of a matrix
 
