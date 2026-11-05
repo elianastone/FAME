@@ -6,17 +6,25 @@
 *.Rproj
 .Rprofile
 .Renviron
+
 # OS cruft
 .DS_Store
 Thumbs.db
-# Large raw data (optional—adjust to your project)
+
+# Large raw data
 data-raw/
 *.csv.gz
 *.parquet
+
+# LaTeX auxiliary files
 *.aux
 *.fdb_latexmk
 *.fls
 *.log
 *.out
 *.synctex.gz
+
+# Images
+*.png
+
 MacTex.pkg
