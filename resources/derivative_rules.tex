@@ -1,0 +1,151 @@
+\documentclass[12pt]{article}
+
+\usepackage[paper=letterpaper,margin=2.5cm]{geometry} % Set Margins
+
+%% Math and math fonts
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{bbold} % for \mathbbm{1}
+
+% date
+\usepackage[nodayofweek]{datetime}
+
+% Color
+\usepackage{color, xcolor}
+
+% Misc
+\usepackage{environ}  % \collect@body in asmmath
+\usepackage{graphicx} % \includegraphics options
+\usepackage{mdframed} % text boxes
+\usepackage{indentfirst} % Indent first paragraph after section header
+\usepackage[shortlabels]{enumitem} % Control enumerate items with [(a)]
+\usepackage{comment} % Comments
+\usepackage{fancyhdr} % Headers and footers
+
+% Tables
+\usepackage{array}
+
+% Sub-figures and figure placement
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float} 
+
+% Graphing
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tikz}
+
+% Title Placement
+\usepackage{titling}
+\setlength{\droptitle}{-6em}
+
+%set indent to 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{7pt}
+
+
+% % Move the header up
+\usepackage{titling}
+\posttitle{\par\centering}
+\preauthor{\centering\normalsize}
+\postauthor{\par\centering\vspace{-1em}}
+\predate{\centering\normalsize}
+\postdate{\par\centering\vspace{-1em}}
+
+% ----------------------------------------
+% TITLE
+% ----------------------------------------
+
+\title{Rules of Derivatives}
+\date{}
+
+\begin{document}
+\maketitle
+
+\textbf{1. Constant Rule:} The derivative of a constant $k$ is zero, \(\frac{d}{dx}k = 0
+\).\\
+
+\textbf{2. Power Rule:} The derivative of $kx^n$, where $k$ and $n$ are constants, is \(
+\frac{d}{dx}(kx^n) = knx^{n-1}
+\).\\
+
+\textbf{3. Sum Rule:} The derivative of a sum is the sum
+of the derivatives, \(
+\frac{d}{dx}[f(x)+g(x)]
+= f'(x)+g'(x)
+\).\\
+
+\textbf{4. Product Rule:} The derivative of a product is
+\(
+\frac{d}{dx}[f(x)g(x)]
+= f'(x)g(x)+f(x)g'(x)
+\).\\
+
+\textbf{5. Quotient Rule:} The derivative of a quotient is \(
+\frac{d}{dx}
+\left[\frac{f(x)}{g(x)}\right]
+=
+\frac{f'(x)g(x)-f(x)g'(x)}
+{[g(x)]^2} \text{, } g(x) \neq 0
+\).\\
+
+\textbf{6. Chain Rule:} The derivative of a function nested inside another function is
+\[
+\frac{d}{dx}[f(g(x))]
+=
+f'(g(x))g'(x).
+\]
+
+\textbf{7. Natural Log Rule:} The derivative of the natural log of a function is
+\[
+\frac{d}{dx}\ln(f(x))
+=
+\frac{f'(x)}{f(x)} \quad \text{where } f(x) >0.
+\]
+
+\textbf{8. Exponent Rule:} The derivative of an exponential function with base $e$ is
+\[
+\frac{d}{dx}e^{f(x)}
+=
+f'(x)e^{f(x)}.
+\]
+
+\textbf{9. Total Derivative: } For a function of two variables, $F(x,y)$,
+the total derivative is
+\[
+dF(x,y)
+=
+F_x\,dx+F_y\,dy \quad \text{or equivalently,} \quad 
+dF(x,y)
+=
+\frac{\partial F}{\partial x}\,dx
++
+\frac{\partial F}{\partial y}\,dy.
+\]
+
+The symbol $\partial$ denotes a
+partial derivative. Partial derivatives measure how a function
+changes with respect to one variable while holding the other variables constant.\\
+
+\textbf{10. Implicit Function Theorem:} 
+
+Suppose $F(x,y)$ is held constant along a level set, so $F(x,y)=c$. Because $F$ is constant along this curve,
+its total derivative is 0.
+
+\[
+dF(x,y)=F_x\,dx+F_y\,dy=0.
+\]
+
+With some algebra,
+\[
+F_y\,dy=-F_x\,dx \implies 
+\frac{dy}{dx}
+=
+-\frac{F_x}{F_y} \quad \text{or equivalently,} \quad 
+\frac{dy}{dx}
+=
+-\frac{\frac{\partial F}{\partial x}}
+{\frac{\partial F}{\partial y}}
+\]
+
+
+\end{document}

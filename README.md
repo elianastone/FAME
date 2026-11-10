@@ -28,3 +28,11 @@ Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu
 ### Class Three (Nov 3) -- Math for Environmental Relationships and Systems
 -   [class notes](class_notes/class_3/class_3.pdf): Scalar multiplication, matrix multiplication, transpose of a matrix, identity matrix, rank, LCA, inverse of a matrix
 
+# Module 3
+
+### Class Four (Nov 5) -- Math for Environmental Relationships and Systems
+-   [class notes](class_notes/class_4/class_4.pdf): Convex and non-convex sets, sequence and series, limits, intermediate value theorem, derivatives
+
+### Class Five (Nov 10) -- Math for Environmental Relationships and Systems
+-   [class notes](class_notes/class_5/class_5.pdf): Chain rule, Log rule, maximum and minimum, averages as minimization
+

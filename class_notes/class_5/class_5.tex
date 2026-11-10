@@ -1,0 +1,662 @@
+\documentclass[12pt]{article}
+
+\usepackage[paper=letterpaper,margin=2.5cm]{geometry} % Set Margins
+
+%% Math and math fonts
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{bbold} % for \mathbbm{1}
+
+% date
+\usepackage[nodayofweek]{datetime}
+
+% Color
+\usepackage{color, xcolor}
+
+% Misc
+\usepackage{environ}  % \collect@body in asmmath
+\usepackage{graphicx} % \includegraphics options
+\usepackage{mdframed} % text boxes
+\usepackage{indentfirst} % Indent first paragraph after section header
+\usepackage[shortlabels]{enumitem} % Control enumerate items with [(a)]
+\usepackage{comment} % Comments
+\usepackage{fancyhdr} % Headers and footers
+
+% Tables
+\usepackage{array}
+
+% Sub-figures and figure placement
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float} 
+
+% Graphing
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tikz}
+
+% Title Placement
+\usepackage{titling}
+\setlength{\droptitle}{-6em}
+
+%set indent to 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+
+% Hyper refs
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor  = blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+% % Citation management
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authordate,open={(},close={)}}
+
+% % Move the header up
+\usepackage{titling}
+\posttitle{\par\centering}
+\preauthor{\centering\normalsize}
+\postauthor{\par\centering\vspace{-1em}}
+\predate{\centering\normalsize}
+\postdate{\par\centering\vspace{-1em}}
+
+% ----------------------------------------
+% TITLE
+% ----------------------------------------
+
+\pagestyle{fancy}
+
+\lhead{Stone}
+\chead{Class Five}
+\rhead{FAME}
+
+\title{FAME Class 5 Notes -- The Math of Environmental Change}
+\author{Eliana Stone}
+\date{November 10, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Announcements}
+\begin{itemize}
+    \item \textbf{Class on Thursday:} review of derivatives and Problem Set 2 bonus question
+    \item \textbf{Mistake on question 7E \& 7F:} the IO matrix in 7E should be transposed, since \(a_{i,j}\) is the amount of good i needed to produce one unit of good j, so each column is the inputs a sector consumes per unit of its own output and each row is a sector's output used as an input in other sectors. This change affects part F. \textbf{Reminder to pay attention to units!}
+\end{itemize}
+
+\section{Review from last class}
+
+\textbf{Additional derivative example:}
+
+Consider the following function
+\[f(x) = -ax^2\]
+
+and visualize it.
+
+\begin{center}
+\begin{tikzpicture}
+\def\wcoef{1} % Set the value of a
+
+\begin{axis}[
+    axis lines = middle,
+    xlabel = {$x$},
+    ylabel = {$f(x)$},
+    xmin = -3, xmax = 3,
+    ymin = -9, ymax = 1,
+    domain = -3:3,
+    samples = 100,
+    grid = major
+]
+
+\addplot[blue, thick] {-\wcoef*x^2};
+
+\end{axis}
+\end{tikzpicture}
+    
+\end{center}
+
+The difference quotient is
+
+\[
+\frac{f(x+\epsilon)-f(x)}{\epsilon}
+=
+\frac{-a(x+\epsilon)^2+ax^2}{\epsilon}.
+\]
+
+The numerator is the vertical change in the
+function and the denominator is the
+horizontal change in the input. We can visualize this. 
+
+\begin{center}
+\begin{tikzpicture}
+
+\def\aval{1}
+\def\xzero{1}
+\def\eps{0.6}
+
+\pgfmathsetmacro{\xone}{\xzero+\eps}
+\pgfmathsetmacro{\yzero}{-\aval*\xzero^2}
+\pgfmathsetmacro{\yone}{-\aval*\xone^2}
+
+\begin{axis}[
+    width=13cm, height=9cm,
+    axis lines=middle,
+    xlabel={$x$},
+    ylabel={$f(x)$},
+    xmin=-0.25, xmax=2.45,
+    ymin=-5, ymax=0.75,
+    domain=-0.25:2.25,
+    samples=150,
+    grid=major,
+    clip=false
+]
+
+% Original parabola
+\addplot[blue, very thick] {-\aval*x^2};
+
+% Define the three points
+\coordinate (P) at (axis cs:\xzero,\yzero);
+\coordinate (Q) at (axis cs:\xone,\yone);
+\coordinate (R) at (axis cs:\xone,\yzero);
+
+% Secant line
+\draw[dashed, black, thick] (P) -- (Q);
+
+% Denominator: horizontal change
+\draw[->, very thick, teal] (P) -- (R)
+    node[midway, above=6pt]
+    {$\Delta x = \epsilon$};
+
+% Numerator: vertical change
+\draw[->, very thick, red] (R) -- (Q)
+    node[midway, right=5pt, align=left]
+    {$\Delta f$\\$=-a(x+\epsilon)^2+ax^2$};
+
+% Mark both points
+\fill[black] (P) circle (2pt);
+\fill[black] (Q) circle (2pt);
+
+\node[above left=3pt] at (P)
+    {$(x,f(x))$};
+
+\node[below left=4pt] at (Q)
+    {$(x+\epsilon,f(x+\epsilon))$};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Expanding the polynomial in the numerator,
+
+\[
+\frac{-a(x^2+2x\epsilon+\epsilon^2)+ax^2}
+{\epsilon}.
+\]
+
+Canceling the $-ax^2$ and $+ax^2$ terms,
+
+\[
+\frac{-2ax\epsilon-a\epsilon^2}{\epsilon}.
+\]
+
+Factoring out $\epsilon$,
+
+\[
+\frac{-a\epsilon(2x+\epsilon)}{\epsilon}
+=
+-a(2x+\epsilon).
+\]
+
+Taking the limit as $\epsilon \to 0$,
+
+\[
+\frac{\Delta f}{\Delta x} = \frac{d f}{d x } = f'(x)
+=
+\lim_{\epsilon\to 0}
+\frac{f(x+\epsilon)-f(x)}{\epsilon}
+=
+-2ax.
+\]\\
+
+\subsection{So, Who "Discovered" Calculus?}
+
+The development of calculus is generally credited to two mathematicians, Isaac Newton and Gottfried Wilhelm Leibniz,
+who developed their ideas independently in the late 17th century (spoilers for the Book of e).
+
+Leibniz approached calculus as a way to describe
+arbitrary changes in mathematical quantities.
+He introduced the fractional notation
+
+\[
+\frac{d f}{d x}
+\]
+
+to represent the rate of change of a function $f$
+with respect to a variable $x$.\\
+
+Newton approached calculus from a more physical perspective focusing on real quantities that change over time. He introduced dot notation which we mostly only use now
+to represent derivatives with respect to time.
+
+\[
+\dot{f} = \frac{d f}{d t}
+\]
+
+Although Newton was more famous during his lifetime,
+Leibniz's notation ended up being more
+useful for the development of future mathematics. We'll see below with derivative rules why it is useful to work with derivatives like fractions.
+
+\section{Derivative Rules}
+
+\subsection{Chain rule} 
+The chain rule allows us to differentiate
+composite functions, or functions nested inside
+other functions. Consider a composite function $F(G(x))$, where $x$ is the input for function $G$, and the resulting output is then used as the input to function $F$.
+
+The chain rule tells us that
+
+\[
+    \frac{d F}{d x} = \frac{d F}{d G} \frac{d G}{d x}
+\]
+
+Notice that the $d G$ terms appear to cancel,
+as if we were multiplying fractions.
+
+\subsection{Differentials}
+
+Remember that the derivative of a function $f(x)$
+can be written as
+
+\[
+    \frac{df(x)}{dx} = f'(x).
+\]
+
+We can rearrange this notation, as if we were working with fractions, to get
+
+\[
+    df(x) = f'(x)\,dx
+\]
+
+Here, we have moved from a derivative
+to a differential.
+
+Think of $dx$ as representing a very small change
+in $x$, and $df$ as the corresponding change
+in the function predicted by its derivative.
+
+The derivative tells us the rate of change, and then 
+the differential tells us how that
+rate translates into a small change in the function.
+
+For a small change in $x$, we can approximate
+the corresponding change in $f$ as
+
+\[
+    \Delta f \approx f'(x)\Delta x
+\]
+
+This is the idea behind linear approximation
+and becomes especially useful when we study integrals. 
+
+
+\section{Log rule}
+
+\textbf{Side note:} The Peabody Museum has
+actual slide rules on display, which are worth checking
+out! Slide rules use logs to simplify
+multiplication and division before the use of calculators.
+
+Now, consider the derivative of the natural log.
+
+\[
+\frac{d}{dx}\ln(f(x))
+\]
+
+Recall that one of our basic derivative rules is
+
+\[
+\frac{d}{dx}\ln(x)=\frac{1}{x}.
+\]
+
+When we have a function inside the log,
+we can apply the chain rule.
+
+\[
+    \frac{d}{dx}\ln(f(x))
+    = \frac{1}{f(x)}\frac{df(x)}{dx} = \frac{f'(x)}{f(x)}
+\]
+
+Here, we assume $f(x)>0$ to avoid dividing by 0.
+
+Recall that the derivative $f'(x)$ tells us how
+quickly a function changes. Dividing by $f(x)$
+expresses that change relative to the
+function's current value.
+
+For small changes, we can write
+
+\[
+\Delta\ln(f(x))
+\approx
+\frac{\Delta f}{f}
+\]
+
+This means that changes in logs approximate
+proportional changes. Multiplying by 100
+gives the approximate percentage change. Therefore, when we see logs, it is often a clue that we are interested in percentage changes.
+
+\subsection{Derivative Rule for Exponential Functions}
+
+For a general exponential function, the derivative is
+
+\[
+\frac{d}{dx}a^x=a^x\ln(a).
+\]
+
+But when $a=e$, we know that $\ln(e)=1$, so
+
+\[
+\frac{d}{dx}e^x=e^x.
+\]
+
+Therefore, its derivative is equal to itself.
+
+What does this mean? Recall that the derivative measures
+how quickly a function changes at a given point.
+For $e^x$, the rate of change is always equal to the
+current value of the function. As the function grows, its slope increases at exactly the same rate. 
+\[
+\frac{f'(x)}{f(x)}
+=
+\frac{e^x}{e^x}
+=1.
+\]
+
+In other words, the proportional growth
+rate is always $100\%$ per unit of $x$.
+
+
+
+
+
+
+\section{Maximum and Minimum}
+
+At the top or bottom of a smooth hill, the slope is zero. The derivative gives us a way to find the slope of a hill and identify when that slope is 0.
+
+\[
+C'(x) = 0
+\]
+
+However, a zero slope alone does not tell us whether
+we have a maximum or minimum. To distinguish them,
+we need to look at the second derivative which
+measures how the slope changes.
+
+\begin{itemize}
+    \item \textbf{Minimum:} $C''(x) > 0$.
+    The function is convex (curves upward), so its
+    slope is increasing.
+
+    \item \textbf{Maximum:} $C''(x) < 0$.
+    The function is concave (curves downward), so its
+    slope is decreasing.
+\end{itemize}
+
+
+\subsection{Example: Optimal Foraging}
+
+Consider an animal that expends effort $x$ to obtain
+net energy $y$. Suppose the relationship is
+
+\[y=f(x)=ax-bx^2,
+\qquad a>0,\; b>0,\; x\geq 0.
+\]
+
+Initially, we expect the animal to gain more energy
+as it increases its foraging effort. However,
+additional foraging eventually becomes less productive.
+
+To understand how energy changes with effort,
+take the first derivative,
+
+\[
+\frac{dy}{dx}=a-2bx.
+\]
+
+At $x=0$,
+
+\[
+\left.\frac{dy}{dx}\right|_{x=0}= a-2b(0) = a>0.
+\]
+
+Therefore, the animal initially gains energy from
+increasing its foraging effort. But notice that the first derivative (\(a-2bx\)) decreases as $x$
+increases, so eventually the marginal energy gain
+becomes zero.
+
+To find the effort that maximizes energy,
+set the first derivative equal to zero.
+
+\[
+a-2bx = 0 \implies x^* = \frac{a}{2b}
+\]
+
+We can verify that this is a maximum using
+the second derivative.
+
+\[
+\frac{d^2y}{dx^2}=-2b<0, \quad \text{since } b >0.
+\]
+
+\section{Two Main Scientific Questions}
+
+Remember what we discussed last class about how much of science is concerned with two fundamental questions:
+
+\begin{enumerate}
+    \item \textbf{How does $Y$ change with $X$?}
+    \item \textbf{Is $Y$ equal to $X$?}
+\end{enumerate}
+
+As previously discussed, we might also want to know how sensitive $Y$ is to changes in $X$. Derivatives provide one way to measure this sensitivity, since the derivative tells us how much $Y$ changes in response to a small change in $X$.
+
+\subsection{Why Do We Use Means?}
+
+Suppose we collect $N$ observations of a variable
+$x$, giving us the values
+
+\[
+x_1,x_2,\ldots,x_N.
+\]
+
+Each observation may be different.
+How can we summarize these observations
+using a single number? One possibility is to choose a value that is as close as possible to all our observations.
+
+\medskip
+
+\noindent
+\textbf{Visual intuition:} Imagine drawing
+a horizontal line through our data.
+We want to position this line so that
+the observations are collectively as close
+to it as possible.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    width=11cm,
+    height=6.5cm,
+    xlabel={Observation $i$},
+    ylabel={Observed value $x_i$},
+    xmin=0.5, xmax=5.5,
+    ymin=0, ymax=10,
+    xtick={1,2,3,4,5},
+    grid=major,
+    legend pos=north west
+]
+
+% Observed data
+\addplot[
+    only marks,
+    mark=*,
+    mark size=3pt,
+    blue
+] coordinates {
+    (1,2) (2,3) (3,7) (4,6) (5,7)
+};
+\addlegendentry{Observations}
+
+% Mean
+\addplot[
+    blue,
+    thick,
+    dashed,
+    domain=0.5:5.5
+] {5};
+\addlegendentry{Mean $\bar{x}=5$}
+
+% Deviations from the mean
+\draw[red, dotted, thick]
+    (axis cs:1,2) -- (axis cs:1,5);
+\draw[red, dotted, thick]
+    (axis cs:2,3) -- (axis cs:2,5);
+\draw[red, dotted, thick]
+    (axis cs:3,7) -- (axis cs:3,5);
+\draw[red, dotted, thick]
+    (axis cs:4,6) -- (axis cs:4,5);
+\draw[red, dotted, thick]
+    (axis cs:5,7) -- (axis cs:5,5);
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+The dotted lines represent the distance (deviation) between each observation and the mean (dashed line). Our goal is to position the dashed line so that it is as close as possible to all observations. To do this, we can find the value that minimizes the sum of squared deviations from the mean.
+
+\subsubsection{Why square the deviations?}
+
+Squaring makes every deviation nonnegative,
+so positive and negative differences
+cannot cancel each other out. But why not simply take the absolute value?
+
+\[
+\text{Squared deviation: }u^2 \quad \text{vs. }
+\text{Absolute deviation: }|u|
+\]
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    width=10cm,
+    height=6.5cm,
+    axis lines=middle,
+    xlabel={$u$},
+    ylabel={Loss},
+    xmin=-2.5, xmax=2.5,
+    ymin=0, ymax=6.5,
+    domain=-2.4:2.4,
+    samples=150,
+    grid=major,
+    legend pos=north west
+]
+
+\addplot[blue, thick] {x^2};
+\addlegendentry{$u^2$}
+
+\addplot[red, thick, dashed] {abs(x)};
+\addlegendentry{$|u|$}
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Both functions penalize deviations from zero. However, the absolute value function has a kink at zero, where its derivative is undefined. This happens because at the kink the slope approaches $-1$ from the left and $+1$ from the right. Since these slopes disagree, there is no single
+derivative at the minimum. The squared deviation function is differentiable everywhere, so we opt for minimizing the sum of squared deviations in order for the calculus to work.
+
+
+\subsubsection{The Mean as a Minimization Problem}
+
+Now back to thinking about the minimization problem, suppose we want to find a single value $\bar{x}$ that minimizes the total squared distance from all observations.
+
+We can write this as
+
+\[
+\bar{x}
+=
+\operatorname*{arg\,min}_{m}
+\sum_{i=1}^{N}(x_i-m)^2
+\]
+
+Here, $\operatorname{arg\,min}$ means
+\textit{the value of $\bar{x}$ that makes
+the expression as small as possible}.
+
+Consider that expression (also called our objective function). 
+
+\[
+F(\bar{x})=\sum_{i=1}^{N}(x_i-\bar{x})^2
+\]
+
+Expanding the summation,
+
+\[
+F(\bar{x})
+=(x_1-\bar{x})^2+(x_2-\bar{x})^2 +\cdots+(x_N-\bar{x})^2.
+\]
+
+
+Now, to find the minimum, we want to take the derivative with respect to $\bar{x}$ and set it equal to zero.
+
+\[
+\frac{dF(\bar{x})}{d\bar{x}}=0.
+\]
+
+Applying the chain rule,
+
+\[
+\frac{dF(\bar{x})}{d\bar{x}} =-2(x_1-\bar{x})-2(x_2-\bar{x})-\cdots-2(x_N-\bar{x})=0.
+\]
+
+In summation notation,
+
+\[
+-2\sum_{i=1}^{N}(x_i-\bar{x})=0.
+\]
+
+Dividing by $-2$,
+
+\[
+\sum_{i=1}^{N}(x_i-\bar{x})=0.
+\]
+
+Collecting terms,
+
+\[
+\sum_{i=1}^{N}x_i-N\bar{x}=0.
+\]
+
+Rearranging, we get
+\[
+\bar{x}=\frac{1}{N}\sum_{i=1}^{N}x_i
+\]
+
+We can confirm that this is a minimum
+using the second derivative:
+
+\[
+\frac{d^2F(\bar{x})}{d\bar{x}^2}=2N>0.
+\]
+
+
+\textbf{Punchline:} The expression for $\bar{x}$ is the familiar formula for the arithmetic mean where we add up all
+the observations and divide by the number of observations. This whole time when we were taking averages, we were actually finding the solution to a calculus problem.
+
+This same principle also is the foundation of ordinary least squares (OLS) regression where we find the line that minimizes the sum of squared residuals.
+
+\end{document}
