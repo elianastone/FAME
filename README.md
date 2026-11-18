@@ -1,7 +1,7 @@
 # FAME
 This repository contains the notes prepared by teaching fellows for Eli Fenichel's Fundamentals of Applied Math for Environmental Scientists Course at the Yale School of the Environment in the Fall of 2026 adapted from materials created by previous teaching fellows. 
 
-The repository has two primary folders, `class notes` and `archive`. The class notes are taken during Eli's in-class lectures. Note: You can ignore the .tex files. The PDFs are what are viewable and what you want! The .tex files are just how we make the pdfs. 
+The repository has three primary folders, `class notes`, `resources`, and `archive`. The class notes are taken during Eli's in-class lectures. Note: You can ignore the .tex files. The PDFs are what are viewable and what you want! The .tex files are just how we make the pdfs. 
 
 The `archive` folder contains class notes and supplemental `section notes` written by Andie Creel in previous years. These materials may be helpful for additional review, but they have not been updated to reflect the current course content.
 
@@ -32,6 +32,9 @@ Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu
 
 ### Class Four (Nov 5) -- Math of Environmental Change
 -   [class notes](class_notes/class_4/class_4.pdf): Convex and non-convex sets, sequence and series, limits, intermediate value theorem, derivatives
+
+### Derivative Rules Cheat Sheet
+- [handout](resources/derivative_rules.pdf)
 
 ### Class Five (Nov 10) -- Math of Environmental Change
 -   [class notes](class_notes/class_5/class_5.pdf): Chain rule, Log rule, maximum and minimum, averages as minimization
