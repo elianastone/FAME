@@ -1,0 +1,940 @@
+\documentclass[12pt]{article}
+
+\usepackage[paper=letterpaper,margin=2.5cm]{geometry} % Set Margins
+
+%% Math and math fonts
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{bbold} % for \mathbbm{1}
+
+% date
+\usepackage[nodayofweek]{datetime}
+
+% Color
+\usepackage{color, xcolor}
+
+% Misc
+\usepackage{environ}  % \collect@body in asmmath
+\usepackage{graphicx} % \includegraphics options
+\usepackage{mdframed} % text boxes
+\usepackage{indentfirst} % Indent first paragraph after section header
+\usepackage[shortlabels]{enumitem} % Control enumerate items with [(a)]
+\usepackage{comment} % Comments
+\usepackage{fancyhdr} % Headers and footers
+
+% Tables
+\usepackage{array}
+
+% Sub-figures and figure placement
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float} 
+
+% Graphing
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{tikz}
+
+% Title Placement
+\usepackage{titling}
+\setlength{\droptitle}{-6em}
+
+%set indent to 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+
+% Hyper refs
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor  = blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor = blue,
+    anchorcolor = blue
+}
+
+% % Citation management
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authordate,open={(},close={)}}
+
+% % Move the header up
+\usepackage{titling}
+\posttitle{\par\centering}
+\preauthor{\centering\normalsize}
+\postauthor{\par\centering\vspace{-1em}}
+\predate{\centering\normalsize}
+\postdate{\par\centering\vspace{-1em}}
+
+% ----------------------------------------
+% TITLE
+% ----------------------------------------
+
+\pagestyle{fancy}
+
+\lhead{Stone}
+\chead{Class Seven}
+\rhead{FAME}
+
+\title{FAME Class 7 Notes -- The Math of Environmental Change}
+\author{Eliana Stone}
+\date{November 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Announcements}
+\begin{itemize}
+    \item \textbf{Final date set:} December 16th in Sage 24 from 9-12 a.m.
+\end{itemize}
+
+\section{Review from last class}
+
+Recall the discussion of conditional means from last class. It may be helpful to visualize how averages and conditional means differ. Imagine that ecologists are studying how trees grow over time in a forest with two different habitats: nutrient-poor soils (\(X=0\)) and nutrient-rich soils (\(X=1\)). When we plot our data, the overall mean trend tells us how average tree height changes over time in the entire forest, and the conditional means give us information on how average tree height changes over time within each soil type. 
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    width=13cm,
+    height=9cm,
+    xlabel={Time ($t$)},
+    ylabel={Outcome ($Y$)},
+    xmin=0, xmax=10,
+    ymin=0, ymax=12,
+    axis lines=left,
+    legend pos=north west,
+    legend style={
+        draw=none,
+        fill=none,
+        font=\small
+    },
+    grid=major
+]
+
+%-----------------------------------
+% Group X = 0 data points
+% Scattered around E[Y|t,X=0] = 1 + 0.4t
+%-----------------------------------
+\addplot[
+    only marks,
+    mark=*,
+    blue
+] coordinates {
+    (1,2.2)
+    (2,1.1)
+    (3,3.0)
+    (4,1.8)
+    (5,3.8)
+    (6,2.7)
+    (7,4.7)
+    (8,3.3)
+    (9,5.3)
+};
+
+%-----------------------------------
+% Group X = 1 data points
+% Scattered around E[Y|t,X=1] = 5 + 0.6t
+%-----------------------------------
+\addplot[
+    only marks,
+    mark=square*,
+    red
+] coordinates {
+    (1,6.5)
+    (2,5.4)
+    (3,7.8)
+    (4,6.5)
+    (5,9.1)
+    (6,7.6)
+    (7,10.2)
+    (8,8.7)
+    (9,11.3)
+};
+
+%-----------------------------------
+% Conditional mean trend: X = 0
+%-----------------------------------
+\addplot[
+    blue,
+    thick,
+    domain=0:10,
+    samples=100
+] {1 + 0.4*x};
+\addlegendentry{Conditional mean: $E[Y\mid t,X=0]$}
+
+%-----------------------------------
+% Conditional mean trend: X = 1
+%-----------------------------------
+\addplot[
+    red,
+    thick,
+    domain=0:10,
+    samples=100
+] {5 + 0.6*x};
+\addlegendentry{Conditional mean: $E[Y\mid t,X=1]$}
+
+%-----------------------------------
+% Overall mean trend
+%-----------------------------------
+\addplot[
+    black,
+    very thick,
+    dashed,
+    domain=0:10,
+    samples=100
+] {3 + 0.5*x};
+\addlegendentry{Overall mean trend: $E[Y\mid t]$}
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\section{OLS Derivation in Matrix Notation}
+
+The goal of Ordinary Least Squares (OLS) is to find the
+coefficient estimates that produce the best-fitting regression
+line through our data.
+
+We begin with the simple linear regression model that we derived last class.
+
+\begin{equation}
+    y_i = \alpha + \beta x_i + \epsilon_i
+\end{equation}
+
+
+We can rewrite this model in matrix notation as
+
+\[
+\underbrace{Y}_{
+\begin{bmatrix}
+y_1 \\ y_2 \\ \vdots \\ y_n
+\end{bmatrix}_{n \times 1}
+}
+=
+\underbrace{X}_{
+\begin{bmatrix}
+1 & x_1 \\
+1 & x_2 \\
+\vdots & \vdots \\
+1 & x_n
+\end{bmatrix}_{n \times k}
+}
+\underbrace{\boldsymbol{\beta}}_{
+\begin{bmatrix}
+\alpha \\ \beta
+\end{bmatrix}_{k \times 1}
+}
++
+\underbrace{\boldsymbol{\epsilon}}_{
+\begin{bmatrix}
+\epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n
+\end{bmatrix}_{n \times 1}
+}
+\]
+
+
+where $Y$ is an $n \times 1$ vector of outcomes, $X$ is an $n \times k$ matrix of regressors, $\boldsymbol{\beta}$ is a $k \times 1$ vector of coefficients,  $\boldsymbol{\epsilon}$ is an $n \times 1$ vector of residuals, $n$ is the number of observations, and $k$ is the number of coefficients.
+
+In this example, $k=2$ because we estimate two coefficients,
+the intercept $\alpha$ and slope $\beta$. The first column of $X$ contains only ones (because
+the intercept $\alpha$ is constant across observations),
+and the second column contains the observed values $x_1,x_2,\ldots,x_n$.
+
+\subsection{Brief Note on Errors vs. Residuals}
+
+Recall from last class the residuals term $\boldsymbol{\epsilon}$. Formally, errors are the differences between observed values and what we would predict if we knew the true relationship between $X$ and $Y$, and residuals are the differences between observed values
+and what we predict using our estimated regression line. We can calculate residuals for any regression line we fit to our data, but we cannot observe the true errors because we do not know the actual relationship between $X$ and $Y$. 
+
+
+\subsection{OLS Intuition and Objective}
+
+With OLS, we want to choose the coefficients $\boldsymbol{\beta}$ that makes these residuals as small as possible. One approach would be to minimize the sum of the residuals, but as previously discussed the positive and negative differences would then cancel each other out.
+
+Instead, with OLS we want to find the
+$\boldsymbol{\beta}$ that minimizes the sum of squared residuals (SSR):
+
+\[
+SSR =
+\sum_{i=1}^{n}(y_i-\hat{y}_i)^2
+\]
+
+where $\hat{y}_i$ is again the values predicted from the estimated regression line (\(\alpha_i + \beta x_i\)).
+
+To solve this minimization problem in matrix notation, we now want to express the sum of squared residuals in matrix notation, take its
+derivative with respect to $\boldsymbol{\beta}$, and
+solve for the coefficients that minimize it.
+
+
+\subsubsection*{Step 1: Express the Error Term in Matrix Notation}
+
+Since we want to minimize the sum of squared residuals,
+we first rearrange the regression equation to isolate
+$\boldsymbol{\epsilon}$.
+
+\[
+\boldsymbol{\epsilon}
+= Y-X\boldsymbol{\beta}
+\]
+
+
+\subsubsection*{Step 2: Express the Sum of Squared Residuals}
+
+In matrix notation, squaring involves multiplying the vector by its transpose.
+This gives us a scalar equal to the sum of squared residuals.
+
+\[
+\boldsymbol{\epsilon}^{\top}\boldsymbol{\epsilon}
+=
+(Y-X\boldsymbol{\beta})^{\top}
+(Y-X\boldsymbol{\beta})
+\]
+
+To simplify, we first distribute the transpose across the terms on the right-hand side. Recall that the transpose of a product
+reverses the order of multiplication, so
+$(AB)^{\top}=B^{\top}A^{\top}$.
+
+\[
+\boldsymbol{\epsilon}^{\top}\boldsymbol{\epsilon}
+=
+(Y^{\top}-\boldsymbol{\beta}^{\top}X^{\top})
+(Y-X\boldsymbol{\beta})
+\]
+
+Now, we expand the expression by multiplying each term in
+the first parentheses by each term in the second parentheses.
+
+\[
+\boldsymbol{\epsilon}^{\top}\boldsymbol{\epsilon}
+=
+Y^{\top}Y
+-Y^{\top}X\boldsymbol{\beta}
+-\boldsymbol{\beta}^{\top}X^{\top}Y
++\boldsymbol{\beta}^{\top}X^{\top}X\boldsymbol{\beta}
+\]
+
+Notice that $Y^{\top}X\boldsymbol{\beta}$ is a scalar
+(a $1\times1$ matrix). The transpose of a scalar equals
+itself, so
+
+\[
+Y^{\top}X\boldsymbol{\beta}
+=
+\boldsymbol{\beta}^{\top}X^{\top}Y
+\]
+
+Therefore, we can combine the two middle terms to obtain
+the final expression for the sum of squared errors.
+
+\[
+\boldsymbol{\epsilon}^{\top}\boldsymbol{\epsilon}
+=
+Y^{\top}Y
+-2\boldsymbol{\beta}^{\top}X^{\top}Y
++\boldsymbol{\beta}^{\top}X^{\top}X\boldsymbol{\beta}
+\]
+
+We can verify that the matrix dimensions are consistent.
+
+\[
+\underbrace{
+\boldsymbol{\epsilon}^{\top}
+}_{1\times n}
+\underbrace{
+\boldsymbol{\epsilon}
+}_{n\times1}
+=
+\underbrace{
+Y^{\top}
+}_{1\times n}
+\underbrace{
+Y
+}_{n\times1}
+-
+2
+\underbrace{
+\boldsymbol{\beta}^{\top}
+}_{1\times k}
+\underbrace{
+X^{\top}
+}_{k\times n}
+\underbrace{
+Y
+}_{n\times1}
++
+\underbrace{
+\boldsymbol{\beta}^{\top}
+}_{1\times k}
+\underbrace{
+X^{\top}
+}_{k\times n}
+\underbrace{
+X
+}_{n\times k}
+\underbrace{
+\boldsymbol{\beta}
+}_{k\times1}
+\]
+
+Each final term has the total dimensions $1\times1$, meaning that
+the sum of squared residuals is a scalar (as desired).
+
+
+\subsubsection*{Step 3: Differentiate the Sum of Squared Residuals}
+To minimize the sum of squared residuals, we then take the derivative
+with respect to $\boldsymbol{\beta}$.
+
+Consider the first term. This is constant with respect to
+$\boldsymbol{\beta}$, so its derivative is zero.
+
+\[
+\frac{\partial}{\partial \boldsymbol{\beta}}
+(Y^{\top}Y) = 0
+\]
+
+The second term is linear in $\boldsymbol{\beta}$,
+so its derivative is $X^{\top}Y$.
+
+\[
+\frac{\partial}{\partial \boldsymbol{\beta}}
+(\boldsymbol{\beta}^{\top}X^{\top}Y)
+= X^{\top}Y
+\]
+
+The third term is quadratic in $\boldsymbol{\beta}$.
+Because $X^{\top}X$ is symmetric, its derivative is
+$2X^{\top}X\boldsymbol{\beta}$.
+
+\[
+\frac{\partial}{\partial \boldsymbol{\beta}}
+(\boldsymbol{\beta}^{\top}X^{\top}X\boldsymbol{\beta})
+= 2X^{\top}X\boldsymbol{\beta}
+\]
+
+Combining these derivatives using the sum rule gives us
+
+\[
+\frac{\partial
+(\boldsymbol{\epsilon}^{\top}\boldsymbol{\epsilon})}
+{\partial \boldsymbol{\beta}}
+=
+0 - 2X^{\top}Y + 2X^{\top}X\boldsymbol{\beta}
+\]
+
+\[ \implies 
+\frac{\partial
+(\boldsymbol{\epsilon}^{\top}\boldsymbol{\epsilon})}
+{\partial \boldsymbol{\beta}}
+=
+- 2X^{\top}Y + 2X^{\top}X\boldsymbol{\beta}
+\]
+
+\textbf{Step 4: Setting the Derivative Equal to 0}
+
+To find the OLS estimator, we lastly have to set the derivative equal
+to zero.
+
+\[
+-2X^{\top}Y + 2X^{\top}X\boldsymbol{\beta} = 0
+\]
+
+Rearranging and dividing by 2,
+
+\[
+X^{\top}X\boldsymbol{\beta} = X^{\top}Y
+\]
+
+Unlike with regular numbers, we cannot divide by a matrix.
+Instead, we multiply by its inverse. Since the order of matrix multiplication matters, we can pre-multiply both sides$(X^{\top}X)^{-1}$, assuming that $X^{\top}X$ is invertible.
+
+\[
+(X^{\top}X)^{-1}X^{\top}X\boldsymbol{\beta}
+=
+(X^{\top}X)^{-1}X^{\top}Y
+\]
+
+Since $(X^{\top}X)^{-1}X^{\top}X = I$, where $I$ is
+the identity matrix, we get our final OLS estimator. 
+
+\[
+\boxed{
+\boldsymbol{\beta}
+=
+(X^{\top}X)^{-1}X^{\top}Y
+}
+\]
+
+
+\section{Taylor Series}
+
+One of the most important ideas connecting math
+and science is that we can use simple functions to approximate more complicated functions.
+
+Suppose we know the value of a function $f(x)$ at some
+point $a$, but we want to estimate its value at a
+nearby point $x$. If the function is differentiable, we can use its
+derivative at $a$ to construct a straight line that
+approximates the function near that point. This is called a linear approximation, or
+the \textbf{first-order Taylor approximation}.
+
+\[
+f(x) = f(a) + f'(a)(x-a)
+\]
+
+where $f(a)$ is the value of the function at $a$,  $f'(a)$ is the slope of the function at $a$, $(x-a)$ is the distance between the point we know and the point we want to approximate.
+
+
+The intuition is that we start at $f(a)$ and adjust
+our prediction based on how far we move from $a$
+and how quickly the function is changing there. The diagram below shows how a tangent line approximates
+a nonlinear function near the point $a$.
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm,
+    height=7.5cm,
+    xlabel={$x$},
+    ylabel={$f(x)$},
+    xmin=0, xmax=5,
+    ymin=0, ymax=4,
+    axis lines=left,
+    xtick={2,3},
+    xticklabels={$a$,$x$},
+    ytick=\empty,
+    legend pos=north west,
+    legend style={draw=none,fill=none},
+    domain=0:5,
+    samples=100,
+    clip=false
+]
+
+% Nonlinear function
+\addplot[
+    blue,
+    very thick
+] {0.25*(x-2)^2 + 0.5*(x-2) + 1.5};
+\addlegendentry{True function $f(x)$}
+
+% Tangent line at a = 2
+\addplot[
+    red,
+    thick,
+    dashed
+] {1.5 + 0.5*(x-2)};
+\addlegendentry{Linear approximation}
+
+% Point of tangency
+\addplot[
+    only marks,
+    mark=*,
+    black
+] coordinates {(2,1.5)};
+
+% Actual value at x = 3
+\addplot[
+    only marks,
+    mark=*,
+    blue
+] coordinates {(3,2.25)};
+
+% Approximate value at x = 3
+\addplot[
+    only marks,
+    mark=*,
+    red
+] coordinates {(3,2)};
+
+% Vertical lines
+\draw[densely dotted]
+    (axis cs:2,0) -- (axis cs:2,1.5);
+
+\draw[densely dotted]
+    (axis cs:3,0) -- (axis cs:3,2.25);
+
+% Approximation error
+\draw[<->,thick]
+    (axis cs:3.15,2)
+    -- (axis cs:3.15,2.25);
+
+\node[anchor=west,font=\small]
+    at (axis cs:3.2,2.1)
+    {Approximation error};
+
+\node[anchor=east,font=\small]
+    at (axis cs:1.95,1.5)
+    {$f(a)$};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Notice that the tangent line and the true function
+have the same value and slope at $x=a$. As we move farther away from $a$, the approximation
+may become less accurate because the true function can curve while the tangent line remains straight. This motivates why we use Taylor series. Instead of only using the slope of the function, we can also use higher-order derivatives to account for curvature.
+
+The expansion is
+
+\[
+f(x)
+=
+f(a)
++
+\frac{f'(a)}{1!}(x-a)
++
+\frac{f''(a)}{2!}(x-a)^2
++
+\cdots
++
+\frac{f^{(k)}(a)}{k!}(x-a)^k
++
+R_k(x)
+\]
+
+where $R_k(x)$ is the remainder, or approximation error after $k$ terms.
+
+
+\subsection{Example: Approximating $\sqrt{10}$}
+
+Suppose we want to calculate
+
+\[
+\sqrt{10}
+\]
+
+without using a calculator.
+
+We can use a Taylor approximation.
+
+\subsubsection*{Step 1: Define the Function}
+
+Let
+
+\[
+f(x)=\sqrt{x}=x^{1/2}
+\]
+
+We want to find $f(10)$.
+
+\subsubsection*{Step 2: Choose a Nearby Point}
+
+We choose $a=9$ because we know that
+
+\[
+f(9)=\sqrt{9}=3
+\]
+
+The closer $a$ is to $x$, the more accurate
+our approximation will generally be.
+
+\subsubsection*{Step 3: Calculate the Derivatives}
+
+The first derivative is
+
+\[
+f'(x)=\frac{1}{2}x^{-1/2}
+=\frac{1}{2\sqrt{x}}
+\]
+
+Evaluating at $a=9$,
+
+\[
+f'(9)=\frac{1}{2\sqrt{9}}=\frac{1}{6}
+\]
+
+The second derivative is
+
+\[
+f''(x)=-\frac{1}{4}x^{-3/2}
+\]
+
+Evaluating at $a=9$,
+
+\[
+f''(9)=-\frac{1}{4(9)^{3/2}}
+=-\frac{1}{108}
+\]
+
+\subsubsection*{Step 4: First-Order Approximation}
+
+Recall the first-order Taylor approximation is
+
+\[
+f(x)\approx f(a)+f'(a)(x-a)
+\]
+
+Substituting $x=10$ and $a=9$,
+
+\[
+\sqrt{10}
+\approx
+3+\frac{1}{6}(10-9)
+\]
+
+\[
+\sqrt{10}\approx 3+\frac{1}{6}
+\]
+
+\[ \implies 
+\sqrt{10}\approx 3.16667
+\]
+
+\subsubsection*{Step 5: Second-Order Approximation}
+
+Now we include the second derivative,
+
+\[
+f(x)
+\approx
+f(a)+f'(a)(x-a)
++\frac{f''(a)}{2}(x-a)^2
+\]
+
+Substituting our values,
+
+\[
+\sqrt{10}
+\approx
+3+\frac{1}{6}(1)
+-\frac{1}{216}(1)^2
+\]
+
+\[
+\sqrt{10}
+\approx
+3+\frac{1}{6}-\frac{1}{216}
+\]
+
+\[ \implies 
+\sqrt{10}\approx 3.16204
+\]
+
+The actual value is approximately
+
+\[
+\sqrt{10}\approx 3.16228
+\]
+
+This also demonstrates how our second-order approximation is more accurate
+than our first-order approximation.
+
+\section{Partial and Total Derivatives}
+
+\subsection{Partial Derivatives}
+
+So far, we have considered functions with one independent variable. But many relationships in science depend on multiple variables. For example, suppose agricultural production depends on labor and land.
+
+\[
+Q=f(X,L)
+\]
+
+where $X$ represents labor and $L$ represents land.
+
+A partial derivative measures how the function changes with respect to one variable, holding all other variables fixed. We use the symbol $\partial$ rather than $d$
+to indicate a partial derivative.
+
+\[
+\frac{\partial Q}{\partial L}, \quad \frac{\partial Q}{\partial A}
+\]
+
+The first term tells us how output changes when labor increases, holding land constant. The second term tells us how output changes when land increases, holding labor constant.
+
+
+\subsection{Total Derivatives}
+
+But what if multiple variables change at the same time? Here, the total derivative accounts for all the ways a function changes when its inputs change.
+
+Suppose
+
+\[
+y=f(x,z)
+\]
+
+The total differential is
+
+\[
+dy=
+\frac{\partial f}{\partial x}dx
++
+\frac{\partial f}{\partial z}dz
+\]
+
+where $dx$ is a small change in $x$, $dz$ is a small change in $z$, and $dy$ is the resulting differential change in $y$.
+
+We add the changes associated with each input
+because both variables affect the outcome.
+
+If $x$ and $z$ both depend on another variable
+$t$, then applying the chain rule gives
+
+\[
+\frac{dy}{dt}
+=
+\frac{\partial f}{\partial x}
+\frac{dx}{dt}
++
+\frac{\partial f}{\partial z}
+\frac{dz}{dt}
+\]
+
+This is the total derivative of $y$ with
+respect to $t$.
+
+\subsection{Example}
+
+Suppose
+
+\[
+y=x^2+3xz
+\]
+
+First, calculate the partial derivatives.
+
+\[
+\frac{\partial y}{\partial x}=2x+3z
+\]
+
+\[
+\frac{\partial y}{\partial z}=3x
+\]
+
+The total differential is
+
+\[
+dy=(2x+3z)dx+3x\,dz
+\]
+
+Now suppose that $z$ is itself a function
+of $x$, so $z=z(x)$.
+
+To find the total derivative with respect to $x$,
+we divide both sides of the equation by $dx$.
+
+\[
+\frac{dy}{dx}
+=
+(2x+3z)\frac{dx}{dx}
++
+3x\frac{dz}{dx}
+\] 
+
+\[
+\implies \frac{dy}{dx}
+=
+2x+3z+3x\frac{dz}{dx}
+\]
+
+
+
+\section{Implicit Function Theorem}
+
+One important theorem we can derive now that we can work with total derivatives is the Implicit Function theorem, which allows us to determine how one variable changes in response to another, even when we cannot easily solve for one variable in terms of the other. 
+
+This is useful in science where variables are often connected through complicated relationships. For example, temperature and pressure may be related, or the populations of two species may depend on one another. The Implicit Function Theorem allows us to understand how these systems respond to changing conditions by allowing us to calculate how one variable changes as another changes, without having to explicitly solve for the underlying equation.
+
+To start, suppose we have an equation
+
+\[
+F(x,y)=0
+\]
+
+where $y$ depends on $x$. We want to know how $y$ changes when $x$ changes.
+
+Recall from the previous section that the total
+differential is
+
+\[
+dF =
+\frac{\partial F}{\partial x}dx
++
+\frac{\partial F}{\partial y}dy
+\]
+
+Since $F(x,y)=0$, its total change must also equal zero.
+
+\[
+\frac{\partial F}{\partial x}dx
++
+\frac{\partial F}{\partial y}dy
+=0
+\]
+
+Dividing by $dx$ gives
+
+\[
+\frac{\partial F}{\partial x}
++
+\frac{\partial F}{\partial y}
+\frac{dy}{dx}
+=0
+\]
+
+Now we rearrange to isolate $\frac{dy}{dx}$,
+
+\[
+\frac{\partial F}{\partial y}
+\frac{dy}{dx}
+=
+-\frac{\partial F}{\partial x}
+\]
+
+Therefore,
+
+\[
+\frac{dy}{dx}
+=
+-\frac{
+\frac{\partial F}{\partial x}
+}{
+\frac{\partial F}{\partial y}
+}
+\]
+
+\subsection{Example}
+
+Consider the relationship
+
+\[
+x^2+y^2=25
+\]
+
+We want to find how $y$ changes with $x$ without
+solving explicitly for $y$.
+
+First, rearrange the equation so that all terms are on one side and the other side equals zero.
+
+\[
+F(x,y)=x^2+y^2-25=0
+\]
+
+Next, calculate the partial derivatives.
+
+\[
+\frac{\partial F}{\partial x} =2x
+\]
+
+\[
+\frac{\partial F}{\partial y}=2y
+\]
+
+Using our formula,
+
+\[
+\frac{dy}{dx}=-\frac{2x}{2y}
+\]
+
+\[
+\implies \frac{dy}{dx}=-\frac{x}{y}
+\]
+
+For example, at the point $(3,4)$,
+
+\[
+\frac{dy}{dx}=-\frac{3}{4}
+\]
+
+This tells us that the slope of the relationship
+at $(3,4)$ is $-3/4$. We were able to figure out how $y$ changes with $x$ without needing to solve for $y$ in the original equation.
+
+
+\end{document}
