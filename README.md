@@ -37,11 +37,15 @@ Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu
 - [handout](resources/derivative_rules.pdf)
 
 ### Class Five (Nov 10) -- Math of Environmental Change
--   [class notes](class_notes/class_5/class_5.pdf): Chain rule, Log rule, maximum and minimum, averages as minimization
+-   [class notes](class_notes/class_5/class_5.pdf): Chain rule, log rule, maximum and minimum, averages as minimization
 
 ### Class Six (Nov 12) -- Math of Environmental Change
 - TF review for Problem Set 2, OLS derivation (See video on Canvas)
 
 ### Class Seven (Nov 17) -- Math of Environmental Change
-- [class notes](class_notes/class_7/class_7.pdf): OLS derivation in matrix notation, Taylor Series, Partial and Total Derivatives, Implicit Function Theorem
+- [class notes](class_notes/class_7/class_7.pdf): OLS derivation in matrix notation, taylor series, partial and total derivatives, Implicit Function Theorem
 
+# Module 4
+
+### Class Eight (Nov 19) -- Math of Environmental Change (cont.) & Aggregation and Comparisons in Environmental Systems
+- [class notes](class_notes/class_8/class_8.pdf): Introduction to aggregation, Reimann sum, definite and indefinite integrals
