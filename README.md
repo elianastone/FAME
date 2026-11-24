@@ -48,4 +48,4 @@ Email: mariana.camacho\@yale.edu & eliana.stone\@yale.edu
 # Module 4
 
 ### Class Eight (Nov 19) -- Math of Environmental Change (cont.) & Aggregation and Comparisons in Environmental Systems
-- [class notes](class_notes/class_8/class_8.pdf): Introduction to aggregation, Reimann sum, definite and indefinite integrals
+- [class notes](class_notes/class_8/class_8.pdf): Implicit Function Theorem (cont.), elasticities, introduction to aggregation, Reimann sum, definite and indefinite integrals
